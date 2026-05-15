@@ -23,5 +23,7 @@ message = client.messages.create(
 
 # Output result
 print(message)
+
+print ('--------------------')
 # Output result text
 print(message.content[0].text)
