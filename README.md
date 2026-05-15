@@ -114,3 +114,7 @@ print(message.content[0].text)
 
 > [!IMPORTANT]
 > On Windows, ensure your `.env` file is in the **root** folder of the project (the same level as `main.py`), otherwise `load_dotenv()` will not find it automatically.
+
+
+# Streaming
+![Streaming](streaming.png)
