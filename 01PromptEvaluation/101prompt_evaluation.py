@@ -71,5 +71,5 @@ dataset = generate_dataset()
 
 # print (dataset)
 # print(json.dumps(dataset, indent=4, ensure_ascii=False))
-with open("dataset.json", "w") as f:
+with open("../dataset.json", "w") as f:
     json.dump(dataset, f, indent=4, ensure_ascii=False)
