@@ -1,5 +1,6 @@
 import os
 import json
+
 from pprint import pprint
 from dotenv import load_dotenv
 from anthropic import Anthropic
@@ -46,6 +47,7 @@ Example output:
 [
     {
         "task": "Description of task",
+        "format": "json" or "python" or "regex"
     },
     ...additional
 ]
@@ -56,6 +58,7 @@ Example output:
 
 Please generate 3 objects.
 """
+
     messages = []
     add_user_message(messages, prompt)
     add_assistant_message(messages, "```json")

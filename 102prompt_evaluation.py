@@ -1,5 +1,7 @@
 import os
 import json
+import re
+import ast
 from pprint import pprint
 from dotenv import load_dotenv
 from anthropic import Anthropic
@@ -73,33 +75,73 @@ Example response shape:
     eval_text = chat(messages, stop_sequences=["```"])
     return json.loads(eval_text)
 
+def validate_json(text):
+    try:
+        json.loads(text.strip())
+        return 10
+    except json.JSONDecodeError:
+        return 0
+
+
+def validate_python(text):
+    try:
+        ast.parse(text.strip())
+        return 10
+    except SyntaxError:
+        return 0
+
+
+def validate_regex(text):
+    try:
+        re.compile(text.strip())
+        return 10
+    except re.error:
+        return 0
+
+
+def grade_syntax(response, test_case):
+    format = test_case["format"]
+    if format == "json":
+        return validate_json(response)
+    elif format == "python":
+        return validate_python(response)
+    else:
+        return validate_regex(response)
+
+# Passes a test case into Claude
 def run_prompt(test_case):
-    """Merges the prompt and test case input, then returns the result"""
     prompt = f"""
 Please solve the following task:
 
 {test_case["task"]}
-"""
 
+* Respond only with Python, JSON, or a plain Regex
+* Do not add any comments or commentary or explanation
+"""
     messages = []
     add_user_message(messages, prompt)
-    output = chat(messages)
+    add_assistant_message(messages, "```code")
+    output = chat(messages, stop_sequences=["```"])
     return output
 
+# Function to execute a single test case and grade the output
 def run_test_case(test_case):
     """Calls run_prompt, then grades the result"""
     output = run_prompt(test_case)
 
-    # Grade the output
     model_grade = grade_by_model(test_case, output)
-    score = model_grade["score"]
+    model_score = model_grade["score"]
     reasoning = model_grade["reasoning"]
+
+    syntax_score = grade_syntax(output, test_case)
+
+    score = (model_score + syntax_score) / 2
 
     return {
         "output": output,
         "test_case": test_case,
         "score": score,
-        "reasoning": reasoning
+        "reasoning": reasoning,
     }
 
 def run_eval(dataset):
