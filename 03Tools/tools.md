@@ -53,3 +53,9 @@ The tool result block has several important properties:
 Claude can request multiple tools in a single response. The message content contains a list of blocks, and we need to process each tool use block separately:
 
 ![img](01toolUseBlock.png)
+
+
+# text editor
+
+> Important Note: Tool version strings can for all model versions can be found here: https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool
+> 
