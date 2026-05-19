@@ -50,3 +50,16 @@ implement test 1-4
 write code to make the tests pass. Remember to connect the document tool to the MCP server in MAIN.py Also remember to run a test with 'uv' 
 ```
 This approach often produces more robust code because Claude has clear success criteria to work toward.
+
+
+## Setting Up an MCP Server
+Adding an MCP server to Claude Code is straightforward. You use the command line to register your server:
+```
+claude mcp add [server-name] [command-to-start-server]
+```
+
+## add local mcp server to claude
+```
+claude mcp add documents uv run main.py to local config
+
+```
